@@ -10,7 +10,9 @@ db = SQLAlchemy(app)
 
 basic_auth = BasicAuth(app)
 
-admin = Admin(app, name='blog', template_mode='bootstrap')
+from blog.main.views import Blogpost
+from blog.admin.views import ModelView
 
-import blog.main.views
-import blog.admin.views
+# admin = Admin(app, name='blog', template_mode='bootstrap')
+admin = Admin(app)
+admin.add_view(ModelView(Blogpost, db.session))
