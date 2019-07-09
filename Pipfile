@@ -7,6 +7,8 @@ verify_ssl = true
 
 [packages]
 flask-sqlalchemy = "*"
+flask-admin = "*"
+flask-basicauth = "*"
 
 [requires]
 python_version = "3.6"

@@ -31,7 +31,7 @@ MANIFEST
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
+emanifest
 *.spec
 
 # Installer logs
@@ -62,7 +62,7 @@ db.sqlite3
 # Flask stuff:
 instance/
 .webassets-cache
-*.db
+*/static/img
 
 # Scrapy stuff:
 .scrapy
