@@ -14,8 +14,10 @@ basic_auth = BasicAuth(app)
 
 posts = FlatPages(app)
 
-from blog.main.views import Blogpost
+from blog.main.views import Blogpost, main
 from blog.admin.views import ModelView
+
+app.register_blueprint(main)
 
 # admin = Admin(app, name='blog', template_mode='bootstrap')
 admin = Admin(app)

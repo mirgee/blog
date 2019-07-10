@@ -45,13 +45,10 @@
 				
 				<ul class="navbar-nav flex-column text-left">
 					<li class="nav-item active">
-            <a class="nav-link" href="{{ url_for('index') }}"><i class="fas fa-home fa-fw mr-2"></i>Blog Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{{ url_for('main.index') }}"><i class="fas fa-home fa-fw mr-2"></i>Blog Home <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-            <a class="nav-link" href="{{ url_for('post') }}"><i class="fas fa-bookmark fa-fw mr-2"></i>Blog Post</a>
-					</li>
-					<li class="nav-item">
-            <a class="nav-link" href="{{ url_for('about') }}"><i class="fas fa-user fa-fw mr-2"></i>About Me</a>
+            <a class="nav-link" href="{{ url_for('main.about') }}"><i class="fas fa-user fa-fw mr-2"></i>About Me</a>
 					</li>
 				</ul>
 				
@@ -84,13 +81,13 @@
 			    <div class="item mb-5">
 				    <div class="media">
               <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="{{
-              url_for('static', filename='img/'+post.path) }}" alt="image">
+              url_for('static', filename='images/'+post.path) }}" alt="image">
 					    <div class="media-body">
-                <h3 class="title mb-1"><a href="{{ url_for('post', path=post.path) }}">Why Every Developer Should Have A Blog</a></h3>
+                <h3 class="title mb-1"><a href="{{ url_for('main.post', path=post.path) }}">Why Every Developer Should Have A Blog</a></h3>
                 <div class="meta mb-1"><span class="date">{{
                     post.date_published }}</span><span class="time">{{ post.readtime }}</span><span class="comment"><a href="#">{{ post.num_comments }}</a></span></div>
                 <div class="intro">{{ post.intro }}</div>
-                <a class="more-link" href="{{ url_for('post', post.id) }}">Read more &rarr;</a>
+                <a class="more-link" href="{{ url_for('main.post', path=post.path) }}">Read more &rarr;</a>
 					    </div><!--//media-body-->
 				    </div><!--//media-->
 			    </div><!--//item-->

@@ -1,11 +1,15 @@
-from blog import app, db, posts
+from blog import db, posts
 from blog.main.models import Blogpost
-from flask import redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for, Blueprint
 from datetime import datetime
 import readtime
 
 
-@app.route('/')
+main = Blueprint('main', __name__, template_folder='templates',
+                 static_folder='static')
+
+
+@main.route('/')
 def index():
     # List all files in the articles folder, order by date_published, trim to
     # few (only public ones)
@@ -17,34 +21,35 @@ def index():
     latest = sorted(published_posts, reverse=True,
                     key=lambda p: p.meta['date_published'])
     for post in latest:
-        setattr(post, 'readtime', str(readtime.of_markdown(post)))
+        setattr(post, 'readtime', str(readtime.of_markdown(post.body)))
         setattr(post, 'num_comments', 0)
-    return render_template(url_for('main', 'index.html'), posts=latest[:10])
+    print(latest)
+    return render_template('index.html', posts=latest[:10])
 
 
-@app.route('/about')
+@main.route('/about')
 def about():
     return render_template('about.html')
 
 
-@app.route('/<path:path>')
+@main.route('/<path:path>')
 def post(path):
     # post = Blogpost.query.filter_by(id=post_id).one()
     post = posts.get_or_404(path)
     return render_template('post.html', post=post)
 
 
-@app.route('/contact')
+@main.route('/contact')
 def contact():
     return render_template('contact.html')
 
 
-@app.route('/add')
+@main.route('/add')
 def add():
     return render_template('add.html')
 
 
-@app.route('/addpost', methods=['POST'])
+@main.route('/addpost', methods=['POST'])
 def addpost():
     print(request.form)
     title = request.form['title']
