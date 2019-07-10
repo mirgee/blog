@@ -1,7 +1,8 @@
-from blog import app, db
+from blog import app, db, posts
 from blog.main.models import Blogpost
 from flask import redirect, render_template, request, url_for
 from datetime import datetime
+import readtime
 
 
 @app.route('/')
@@ -11,9 +12,14 @@ def index():
     # Create intro automatically from the first few hundred characters,
     # estimate time_to_read based on length
     # id, img_uri, date_published, time_to_read, intro, num_comments
-    posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
-
-    return render_template('index.html', posts=posts)
+    # posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
+    published_posts = (p for p in posts if 'date_published' in p.meta)
+    latest = sorted(published_posts, reverse=True,
+                    key=lambda p: p.meta['date_published'])
+    for post in latest:
+        setattr(post, 'readtime', str(readtime.of_markdown(post)))
+        setattr(post, 'num_comments', 0)
+    return render_template(url_for('main', 'index.html'), posts=latest[:10])
 
 
 @app.route('/about')
@@ -21,10 +27,10 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/post/<int:post_id>')
-def post(post_id):
-    post = Blogpost.query.filter_by(id=post_id).one()
-
+@app.route('/<path:path>')
+def post(path):
+    # post = Blogpost.query.filter_by(id=post_id).one()
+    post = posts.get_or_404(path)
     return render_template('post.html', post=post)
 
 

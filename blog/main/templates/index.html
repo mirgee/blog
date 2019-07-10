@@ -83,10 +83,12 @@
         {% for post in posts %}
 			    <div class="item mb-5">
 				    <div class="media">
-              <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="{{ url_for('static', filename='img/'+post.img_uri) }}" alt="image">
+              <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="{{
+              url_for('static', filename='img/'+post.path) }}" alt="image">
 					    <div class="media-body">
-                <h3 class="title mb-1"><a href="{{ url_for('post', post.id) }}">Why Every Developer Should Have A Blog</a></h3>
-                <div class="meta mb-1"><span class="date">{{ post.date_published }}</span><span class="time">{{ post.time_to_read }}</span><span class="comment"><a href="#">{{ post.num_comments }}</a></span></div>
+                <h3 class="title mb-1"><a href="{{ url_for('post', path=post.path) }}">Why Every Developer Should Have A Blog</a></h3>
+                <div class="meta mb-1"><span class="date">{{
+                    post.date_published }}</span><span class="time">{{ post.readtime }}</span><span class="comment"><a href="#">{{ post.num_comments }}</a></span></div>
                 <div class="intro">{{ post.intro }}</div>
                 <a class="more-link" href="{{ url_for('post', post.id) }}">Read more &rarr;</a>
 					    </div><!--//media-body-->

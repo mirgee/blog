@@ -2,13 +2,17 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_basicauth import BasicAuth
 from flask_admin import Admin
+from flask_flatpages import FlatPages
 
 app = Flask(__name__)
 app.config.from_object('config')
+app.config.from_object('instance.config')
 
 db = SQLAlchemy(app)
 
 basic_auth = BasicAuth(app)
+
+posts = FlatPages(app)
 
 from blog.main.views import Blogpost
 from blog.admin.views import ModelView

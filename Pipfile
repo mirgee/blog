@@ -9,6 +9,8 @@ verify_ssl = true
 flask-sqlalchemy = "*"
 flask-admin = "*"
 flask-basicauth = "*"
+flask-flatpages = "*"
+readtime = "*"
 
 [requires]
 python_version = "3.6"
