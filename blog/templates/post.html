@@ -1,0 +1,18 @@
+{% extends 'base.html' %} 
+{% block content %}
+	    <article class="blog-post px-3 py-5 p-md-5">
+		    <div class="container">
+			    <header class="blog-post-header">
+				    <h2 class="title mb-2">Why Every Developer Should Have A Blog</h2>
+            <div class="meta mb-3"><span class="date">{{ post.date_published }}</span><span class="time">5 min read</span><span class="comment"><a href="#">4</a></span></div>
+			    </header>
+			    
+			    <div class="blog-post-body">
+				    <figure class="blog-banner">
+              <img class="img-fluid" src="{{ url_for('main.static', filename= 'images/blog/'+post.image+'.jpg') }}" alt="image">
+              {% if post.image_credit %}
+              <figcaption class="mt-2 text-center image-caption">Image Credit: {{ post.image_credit }}</figcaption>
+              {% endif %}
+				    </figure>
+            {{ post }}
+{% endblock %}
