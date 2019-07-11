@@ -12,20 +12,21 @@ main = Blueprint('main', __name__, template_folder='templates',
 
 @main.route('/')
 def index():
-    # List all files in the articles folder, order by date_published, trim to
-    # few (only public ones)
-    # Create intro automatically from the first few hundred characters,
-    # estimate time_to_read based on length
-    # id, img_uri, date_published, time_to_read, intro, num_comments
-    # posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
-    published_posts = (p for p in posts if 'date' in p.meta)
+    def validate(date_text):
+        try:
+            datetime.strptime(date_text, '%d-%m-%Y')
+            return True
+        except (ValueError, TypeError):
+            return False
+
+    published_posts = (p for p in posts if 'date' in p.meta and
+                       validate(p.meta['date']))
     latest = sorted(published_posts, reverse=True,
-                    key=lambda p: p.meta['date_published'])
+                    key=lambda p: p.meta['date'])
     for post in latest:
         setattr(post, 'readtime', str(readtime.of_markdown(post.body)))
         setattr(post, 'num_comments', 0)
-    print(latest)
-    return render_template('index.html', posts=latest[:10])
+    return render_template('index.html', posts=latest[:15])
 
 
 @main.route('/about')
@@ -35,7 +36,6 @@ def about():
 
 @main.route('/<path:path>')
 def post(path):
-    # post = Blogpost.query.filter_by(id=post_id).one()
     post = posts.get_or_404(path)
     return render_template('post.html', post=post)
 
