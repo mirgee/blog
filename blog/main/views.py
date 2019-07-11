@@ -1,4 +1,4 @@
-from blog import db, posts
+from blog import db, posts, app
 from blog.main.models import Blogpost
 from flask import redirect, render_template, request, url_for, Blueprint
 from datetime import datetime
@@ -23,10 +23,23 @@ def index():
                        validate(p.meta['date']))
     latest = sorted(published_posts, reverse=True,
                     key=lambda p: p.meta['date'])
+
     for post in latest:
         setattr(post, 'readtime', str(readtime.of_markdown(post.body)))
         setattr(post, 'num_comments', 0)
-    return render_template('index.html', posts=latest[:15])
+
+    ppp = app.config['POSTS_PER_PAGE']
+    max_pages = len(latest) // ppp
+    page = max(0,
+               min(max_pages, request.args.get('page', 0, type=int)))
+    print(f'page={page}')
+
+    prev_url = url_for('main.index', page=page-1) if page > 0 else None
+    next_url = \
+        url_for('main.index', page=page+1) if page+1 <= max_pages else None
+
+    return render_template('index.html', posts=latest[page*ppp:(page+1)*ppp],
+                           prev_url=prev_url, next_url=next_url)
 
 
 @main.route('/about')
@@ -34,7 +47,7 @@ def about():
     return render_template('about.html')
 
 
-@main.route('/<path:path>')
+@main.route('/posts/<path:path>')
 def post(path):
     post = posts.get_or_404(path)
     return render_template('post.html', post=post)

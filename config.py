@@ -9,3 +9,4 @@ FLATPAGES_EXTENSION_CONFIGS = {
         # 'linenums': True,
     }
 }
+POSTS_PER_PAGE = 10
