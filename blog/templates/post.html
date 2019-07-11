@@ -9,7 +9,7 @@
 			    
 			    <div class="blog-post-body">
 				    <figure class="blog-banner">
-              <img class="img-fluid" src="{{ url_for('main.static', filename= 'images/blog/'+post.image+'.jpg') }}" alt="image">
+              <img class="img-fluid" src="{{ url_for('main.static', filename='images/banners/'+post.path+'.jpg') }}" alt="image">
               {% if post.image_credit %}
               <figcaption class="mt-2 text-center image-caption">Image Credit: {{ post.image_credit }}</figcaption>
               {% endif %}

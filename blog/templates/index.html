@@ -22,7 +22,7 @@
         {% for post in posts %}
 			    <div class="item mb-5">
 				    <div class="media">
-              <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="{{ url_for('static', filename='images/'+post.path) }}" alt="image">
+              <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="{{ url_for('static', filename='images/thumbs/'+post.path+'.jpg') }}" alt="image">
 					    <div class="media-body">
                 <h3 class="title mb-1"><a href="{{ url_for('main.post', path=post.path) }}">{{ post.title }}</a></h3>
                 <div class="meta mb-1"><span class="date">{{ post.date_published }}</span><span class="time">{{ post.readtime }}</span><span class="comment"><a href="#">{{ post.num_comments }}</a></span></div>
