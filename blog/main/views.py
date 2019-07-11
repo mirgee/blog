@@ -2,6 +2,7 @@ from blog import db, posts
 from blog.main.models import Blogpost
 from flask import redirect, render_template, request, url_for, Blueprint
 from datetime import datetime
+from flask_flatpages import pygments_style_defs
 import readtime
 
 
@@ -17,7 +18,7 @@ def index():
     # estimate time_to_read based on length
     # id, img_uri, date_published, time_to_read, intro, num_comments
     # posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
-    published_posts = (p for p in posts if 'date_published' in p.meta)
+    published_posts = (p for p in posts if 'date' in p.meta)
     latest = sorted(published_posts, reverse=True,
                     key=lambda p: p.meta['date_published'])
     for post in latest:
@@ -64,3 +65,8 @@ def addpost():
     db.session.commit()
 
     return redirect(url_for('index'))
+
+
+@main.route('/pygments.css')
+def pygments_css():
+    return pygments_style_defs('monokai'), 200, {'Content-Type': 'text/css'}
