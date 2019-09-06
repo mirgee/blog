@@ -12,6 +12,7 @@ flask-basicauth = "*"
 flask-flatpages = "*"
 readtime = "*"
 bs4 = "*"
+uwsgi = "*"
 
 [requires]
 python_version = "3.6"

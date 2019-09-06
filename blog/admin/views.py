@@ -1,4 +1,3 @@
-from blog import basic_auth
 from flask import redirect, Response
 from flask_admin.contrib.sqla import ModelView
 from werkzeug.exceptions import HTTPException
@@ -13,10 +12,10 @@ class AuthException(HTTPException):
 
 
 class ModelView(ModelView):
-    def is_accessible(self):
+    def is_accessible(self, basic_auth):
         if not basic_auth.authenticate():
             raise AuthException('Not authenticated.')
         return True
 
-    def inaccessible_callback(self, name, **kwargs):
+    def inaccessible_callback(self, name, basic_auth, **kwargs):
         return redirect(basic_auth.challenge())

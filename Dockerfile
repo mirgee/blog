@@ -1,21 +1,28 @@
 FROM python:3.6-alpine
 
-RUN adduser -D blog
+# RUN adduser -D blog
 
 WORKDIR /home/blog
 
-COPY Pipfile Pipfile
-RUN pip install --upgrade pip \
+COPY Pipfile config.py run.py uwsgi.ini start.sh ./
+COPY articles ./articles
+COPY blog ./blog
+COPY instance ./instance
+
+RUN     apk add linux-headers \
         && pip install pipenv \
-        && apk add --update --no-cache g++ gcc libxslt-dev \
-        && pipenv install --deploy --ignore-pipfile \
-        && pipenv install gunicorn
-COPY blog config.py run.py boot.sh ./
+        && apk add --update --no-cache g++ gcc libxslt-dev openrc nginx \
+        && export PIPENV_VENV_IN_PROJECT=1 \
+        && pipenv install --deploy --ignore-pipfile
 
-ENV FLASK_APP run.py
+# RUN chown -R blog ./
 
-RUN chown -R blog ./
-USER blog
+COPY conf/nginx-conf/ /etc/nginx/
+COPY conf/systemd-conf/blog.service /etc/systemd/system/
 
-EXPOSE 5000
-ENTRYPOINT ["./boot.sh"]    
+EXPOSE 8081
+
+# USER blog
+
+# ENTRYPOINT ["pipenv", "run", "uwsgi", "uwsgi.ini"]    
+ENTRYPOINT ["./start.sh"]
